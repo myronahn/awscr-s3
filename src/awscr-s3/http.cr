@@ -22,6 +22,9 @@ module Awscr::S3
                    @region : String = standard_us_region,
                    @custom_endpoint : String? = nil)
       @http = HTTP::Client.new(endpoint)
+      # Put in some test timeouts
+      @http.connect_timeout = 5.minutes
+      @http.read_timeout = 30.minutes
 
       @http.before_request do |request|
         @signer.sign(request)
