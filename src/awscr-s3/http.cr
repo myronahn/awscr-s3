@@ -20,11 +20,12 @@ module Awscr::S3
 
     def initialize(@signer : Awscr::Signer::Signers::Interface,
                    @region : String = standard_us_region,
-                   @custom_endpoint : String? = nil)
+                   @custom_endpoint : String? = nil,
+                   @connect_timeout = 5.seconds,
+                   @read_timeout = 5.minutes)
       @http = HTTP::Client.new(endpoint)
-      # Put in some test timeouts
-      @http.connect_timeout = 5.minutes
-      @http.read_timeout = 30.minutes
+      @http.connect_timeout = @connect_timeout
+      @http.read_timeout = @read_timeout
 
       @http.before_request do |request|
         @signer.sign(request)
