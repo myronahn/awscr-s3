@@ -26,7 +26,7 @@ module Awscr::S3
   class Client
     @signer : Awscr::Signer::Signers::Interface
 
-    def initialize(@region : String, @aws_access_key : String, @aws_secret_key : String, @endpoint : String? = nil, signer : Symbol = :v4, @connect_timeout = 5.seconds, @read_timeout = 5.minutes)
+    def initialize(@region : String, @aws_access_key : String, @aws_secret_key : String, @endpoint : String? = nil, signer : Symbol = :v4, @connect_timeout : Time::Span = 5.seconds, @read_timeout : Time::Span = 5.minutes)
       @signer = SignerFactory.get(
         version: signer,
         region: @region,
